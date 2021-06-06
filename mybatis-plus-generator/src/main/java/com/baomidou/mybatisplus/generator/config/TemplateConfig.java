@@ -16,9 +16,13 @@
 package com.baomidou.mybatisplus.generator.config;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.generator.config.extra.ExtraGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 模板路径配置项
@@ -32,6 +36,8 @@ public class TemplateConfig {
 
     private String entity;
 
+    private List<ExtraGenerator> entityExtra = Collections.emptyList();
+
     private boolean disableEntity;
 
     /**
@@ -41,13 +47,23 @@ public class TemplateConfig {
 
     private String service;
 
+    private List<ExtraGenerator> serviceExtra = Collections.emptyList();
+
     private String serviceImpl;
+
+    private List<ExtraGenerator> serviceImplExtra = Collections.emptyList();
 
     private String mapper;
 
+    private List<ExtraGenerator> mapperExtra = Collections.emptyList();
+
     private String xml;
 
+    private List<ExtraGenerator> xmlExtra = Collections.emptyList();
+
     private String controller;
+
+    private List<ExtraGenerator> controllerExtra = Collections.emptyList();
 
     /**
      * 不对外爆露
@@ -88,6 +104,10 @@ public class TemplateConfig {
             return StringUtils.isBlank(this.entity) ? ConstVal.TEMPLATE_ENTITY_JAVA : this.entity;
         }
         return null;
+    }
+
+    public List<ExtraGenerator> getEntityExtra() {
+        return this.entityExtra;
     }
 
     /**
@@ -147,6 +167,10 @@ public class TemplateConfig {
 
     public String getMapper() {
         return mapper;
+    }
+
+    public List<ExtraGenerator> getMapperExtra() {
+        return this.mapperExtra;
     }
 
     public String getXml() {
@@ -218,6 +242,17 @@ public class TemplateConfig {
         }
 
         /**
+         * 设置实体额外模板
+         *
+         * @param entityExtra 实体额外模板
+         * @return this
+         */
+        public Builder entityExtra(@NotNull List<ExtraGenerator> entityExtra) {
+            this.templateConfig.entityExtra = entityExtra;
+            return this;
+        }
+
+        /**
          * 设置service模板路径
          *
          * @param serviceTemplate     service接口模板路径
@@ -238,6 +273,27 @@ public class TemplateConfig {
          */
         public Builder mapper(@NotNull String mapperTemplate) {
             this.templateConfig.mapper = mapperTemplate;
+            return this;
+        }
+
+        /**
+         * 设置mapper额外模板
+         *
+         * @param mapperExtra mapper额外模板
+         * @return this
+         */
+        public Builder mapperExtra(@NotNull ExtraGenerator mapperExtra) {
+            return mapperExtra(Collections.singletonList(mapperExtra));
+        }
+
+        /**
+         * 设置mapper额外模板
+         *
+         * @param mapperExtra mapper额外模板
+         * @return this
+         */
+        public Builder mapperExtra(@NotNull List<ExtraGenerator> mapperExtra) {
+            this.templateConfig.mapperExtra = mapperExtra;
             return this;
         }
 

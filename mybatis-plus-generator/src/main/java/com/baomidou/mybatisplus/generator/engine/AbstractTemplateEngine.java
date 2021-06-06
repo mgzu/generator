@@ -16,11 +16,10 @@
 package com.baomidou.mybatisplus.generator.engine;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.generator.config.ConstVal;
-import com.baomidou.mybatisplus.generator.config.GlobalConfig;
-import com.baomidou.mybatisplus.generator.config.OutputFile;
-import com.baomidou.mybatisplus.generator.config.TemplateConfig;
+import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
+import com.baomidou.mybatisplus.generator.config.extra.ExtraGenerator;
+import com.baomidou.mybatisplus.generator.config.extra.ExtraInfo;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.util.FileUtils;
 import com.baomidou.mybatisplus.generator.util.RuntimeUtils;
@@ -90,9 +89,16 @@ public abstract class AbstractTemplateEngine {
         String entityName = tableInfo.getEntityName();
         String mapperPath = getPathInfo(OutputFile.mapper);
         if (StringUtils.isNotBlank(tableInfo.getMapperName()) && StringUtils.isNotBlank(mapperPath)) {
+            List<ExtraGenerator> mapperExtra = getConfigBuilder().getTemplateConfig().getMapperExtra();
             getTemplateFilePath(TemplateConfig::getMapper).ifPresent(mapper -> {
                 String mapperFile = String.format((mapperPath + File.separator + tableInfo.getMapperName() + suffixJavaOrKt()), entityName);
                 outputFile(new File(mapperFile), objectMap, mapper);
+                mapperExtra.forEach(item -> {
+                    ExtraInfo extraInfo = item.extraGenerator(mapperPath, tableInfo, objectMap);
+                    String templateFilePath = templateFilePath(extraInfo.getTemplatePath());
+                    String extraFile = String.format((extraInfo.getOutputPath() + suffixJavaOrKt()), entityName);
+                    outputFile(new File(extraFile), objectMap, templateFilePath);
+                });
             });
         }
         // MpMapper.xml
