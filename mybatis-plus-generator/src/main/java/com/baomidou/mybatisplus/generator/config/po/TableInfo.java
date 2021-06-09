@@ -173,11 +173,11 @@ public class TableInfo {
         if (importSerializable) {
             this.importPackages.add(Serializable.class.getCanonicalName());
         }
-        if (this.isConvert()) {
+        if (this.isConvert() && this.globalConfig.isEnableMybatisPlus()) {
             this.importPackages.add(TableName.class.getCanonicalName());
         }
         IdType idType = entity.getIdType();
-        if (null != idType && this.isHavePrimaryKey()) {
+        if (null != idType && this.isHavePrimaryKey() && this.globalConfig.isEnableMybatisPlus()) {
             // 指定需要 IdType 场景
             this.importPackages.add(IdType.class.getCanonicalName());
             this.importPackages.add(TableId.class.getCanonicalName());
@@ -189,27 +189,27 @@ public class TableInfo {
             }
             if (field.isKeyFlag()) {
                 // 主键
-                if (field.isConvert() || field.isKeyIdentityFlag()) {
+                if ((field.isConvert() || field.isKeyIdentityFlag()) && this.globalConfig.isEnableMybatisPlus()) {
                     importPackages.add(TableId.class.getCanonicalName());
                 }
                 // 自增
-                if (field.isKeyIdentityFlag()) {
+                if (field.isKeyIdentityFlag() && this.globalConfig.isEnableMybatisPlus()) {
                     importPackages.add(IdType.class.getCanonicalName());
                 }
-            } else if (field.isConvert()) {
+            } else if (field.isConvert() && this.globalConfig.isEnableMybatisPlus()) {
                 // 普通字段
                 importPackages.add(com.baomidou.mybatisplus.annotation.TableField.class.getCanonicalName());
             }
-            if (null != field.getFill()) {
+            if (null != field.getFill() && this.globalConfig.isEnableMybatisPlus()) {
                 // 填充字段
                 importPackages.add(com.baomidou.mybatisplus.annotation.TableField.class.getCanonicalName());
                 //TODO 好像default的不用处理也行,这个做优化项目.
                 importPackages.add(FieldFill.class.getCanonicalName());
             }
-            if (field.isVersionField()) {
+            if (field.isVersionField() && this.globalConfig.isEnableMybatisPlus()) {
                 this.importPackages.add(Version.class.getCanonicalName());
             }
-            if (field.isLogicDeleteField()) {
+            if (field.isLogicDeleteField() && this.globalConfig.isEnableMybatisPlus()) {
                 this.importPackages.add(TableLogic.class.getCanonicalName());
             }
         });

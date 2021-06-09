@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.extra.ExtraGenerator;
 import com.baomidou.mybatisplus.generator.config.extra.ExtraInfo;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
+import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,20 +33,26 @@ public class MysqlCodeGenerator {
 
             @Override
             public PackageConfig.Builder packageConfigBuilder() {
-                return new PackageConfig.Builder().parent("com.abc").moduleName("dict");
+                return new PackageConfig.Builder().parent("com.abc").moduleName("dict")
+                    ;
             }
 
             @Override
             public IConfigBuilder<StrategyConfig> strategyConfigBuilder() {
                 return new StrategyConfig.Builder().addTablePrefix("t_").addInclude("t_dict")
+                    .entityBuilder().superClass("com.abc.dict.entity.Base").naming(NamingStrategy.underline_to_camel)
+                    .mapperBuilder().enableBaseResultMap().enableBaseColumnList()
+                    .formatMapperFileName("%sDao").formatXmlFileName("%sDao")
                     ;
             }
 
             @Override
             public TemplateConfig.Builder templateConfigBuilder() {
-                return new TemplateConfig.Builder().mapperExtra(new ExtraGenerator() {
+                return new TemplateConfig.Builder().entity("/templates/entity.java")
+                    .mapperExtra(new ExtraGenerator() {
                     @Override
                     public ExtraInfo extraGenerator(@NotNull String basePath, @NotNull TableInfo tableInfo, @NotNull Map<String, Object> objectMap) {
+                        // fixme: package
                         String templatePath = "/templates/mapperImpl.java";
                         String outputPath = String.format("%s%s%s%s%s%s", basePath, File.separator, "impl" , File.separator , tableInfo.getMapperName() , "Impl");
                         return new ExtraInfo(templatePath, outputPath);
@@ -54,7 +62,9 @@ public class MysqlCodeGenerator {
 
             @Override
             public GlobalConfig.Builder globalConfigBuilder() {
-                return new GlobalConfig.Builder().author("132").outputDir("./").fileOverride()
+                return new GlobalConfig.Builder().author("132").outputDir("./mybatis-plus-generator/src/test/java").fileOverride().openDir(false)
+                    .enableMybatisPlus(false)
+                    .dateType(DateType.ONLY_DATE)
                     ;
             }
         }.execute();

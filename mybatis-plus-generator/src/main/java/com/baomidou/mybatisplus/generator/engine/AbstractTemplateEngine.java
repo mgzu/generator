@@ -317,6 +317,7 @@ public abstract class AbstractTemplateEngine {
         objectMap.put("kotlin", globalConfig.isKotlin());
         objectMap.put("swagger", globalConfig.isSwagger());
         objectMap.put("date", globalConfig.getCommentDate());
+        objectMap.put("mp", globalConfig.isEnableMybatisPlus());
         // 存在 schemaName 设置拼接 . 组合表名
         String schemaName = config.getDataSourceConfig().getSchemaName();
         if (StringUtils.isNotBlank(schemaName)) {

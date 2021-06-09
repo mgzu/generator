@@ -66,6 +66,8 @@ public class GlobalConfig {
      */
     private DateType dateType = DateType.TIME_PACK;
 
+    private boolean enableMybatisPlus = true;
+
     /**
      * 获取注释日期
      *
@@ -99,6 +101,10 @@ public class GlobalConfig {
 
     public boolean isSwagger() {
         return swagger;
+    }
+
+    public boolean isEnableMybatisPlus() {
+        return enableMybatisPlus;
     }
 
     @NotNull
@@ -191,6 +197,11 @@ public class GlobalConfig {
          */
         public Builder commentDate(@NotNull String pattern) {
             return commentDate(() -> new SimpleDateFormat(pattern).format(new Date()));
+        }
+
+        public Builder enableMybatisPlus(@NotNull boolean enabled) {
+            this.globalConfig.enableMybatisPlus = enabled;
+            return this;
         }
 
         @Override

@@ -5,16 +5,13 @@ import ${superMapperClassPackage};
 
 /**
  * <p>
- * $!{table.comment} Mapper 接口
+ * $!{table.comment} Mapper Impl
  * </p>
  *
  * @author ${author}
  * @since ${date}
  */
-#if(${kotlin})
-interface ${table.mapperName} : ${superMapperClass}<${entity}>
-#else
-public class ${table.mapperName}Impl implements ${table.mapperName} {
+##public class ${table.mapperName}Impl implements ${table.mapperName} {
+public class ${table.mapperName}Impl {
 
 }
-#end

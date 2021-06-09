@@ -127,6 +127,7 @@ subprojects {
         testImplementation "org.mockito:mockito-junit-jupiter:3.4.4"
         testImplementation "${lib["lagarto"]}"
         testImplementation "${lib["logback-classic"]}"
+        testImplementation group: 'org.springframework', name: 'spring-webmvc', version: '5.3.7'
     }
 
     //noinspection GroovyAssignabilityCheck
