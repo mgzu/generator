@@ -1,4 +1,4 @@
-package ${package.Mapper};
+package ${package.Mapper}${extraPackageSuffix};
 
 import ${package.Entity}.${entity};
 import ${superMapperClassPackage};

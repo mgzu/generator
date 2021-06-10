@@ -41,8 +41,8 @@ public class MysqlCodeGenerator {
             public IConfigBuilder<StrategyConfig> strategyConfigBuilder() {
                 return new StrategyConfig.Builder().addTablePrefix("t_").addInclude("t_dict")
                     .entityBuilder().superClass("com.abc.dict.entity.Base").naming(NamingStrategy.underline_to_camel)
-                    .mapperBuilder().enableBaseResultMap().enableBaseColumnList()
-                    .formatMapperFileName("%sDao").formatXmlFileName("%sDao")
+                    .mapperBuilder().enableBaseResultMap().enableBaseColumnList().enableJoinColumnList()
+                    .formatMapperFileName("%sDao").formatXmlFileName("%sDao").mybatisGeneratorBase()
                     ;
             }
 
@@ -50,14 +50,14 @@ public class MysqlCodeGenerator {
             public TemplateConfig.Builder templateConfigBuilder() {
                 return new TemplateConfig.Builder().entity("/templates/entity.java")
                     .mapperExtra(new ExtraGenerator() {
-                    @Override
-                    public ExtraInfo extraGenerator(@NotNull String basePath, @NotNull TableInfo tableInfo, @NotNull Map<String, Object> objectMap) {
-                        // fixme: package
-                        String templatePath = "/templates/mapperImpl.java";
-                        String outputPath = String.format("%s%s%s%s%s%s", basePath, File.separator, "impl" , File.separator , tableInfo.getMapperName() , "Impl");
-                        return new ExtraInfo(templatePath, outputPath);
-                    }
-                });
+                        @Override
+                        public ExtraInfo extraGenerator(@NotNull String basePath, @NotNull TableInfo tableInfo, @NotNull Map<String, Object> objectMap) {
+                            String templatePath = "/templates/mapperImpl.java";
+                            objectMap.put("extraPackageSuffix", "." + "impl");
+                            String outputPath = String.format("%s%s%s%s%s%s", basePath, File.separator, "impl", File.separator, tableInfo.getMapperName(), "Impl");
+                            return new ExtraInfo(templatePath, outputPath);
+                        }
+                    });
             }
 
             @Override
