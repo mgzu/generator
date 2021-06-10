@@ -59,6 +59,12 @@ public class TableInfo {
     private String fieldNames;
 
     private final Entity entity;
+    /**
+     * 主键
+     */
+    private TableField primaryKey = null;
+    // TODO: 多主键
+    private final List<TableField> primaryKeys = new ArrayList<>();
 
     /**
      * 构造方法
@@ -301,5 +307,13 @@ public class TableInfo {
     @NotNull
     public List<TableField> getCommonFields() {
         return commonFields;
+    }
+
+    public TableField getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(TableField primaryKey) {
+        this.primaryKey = primaryKey;
     }
 }

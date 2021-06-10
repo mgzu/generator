@@ -18,6 +18,7 @@ package com.baomidou.mybatisplus.generator.config.builder;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.generator.config.IConfigBuilder;
 import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.cache.decorators.LoggingCache;
 import org.jetbrains.annotations.NotNull;
@@ -58,6 +59,16 @@ public class Mapper implements ITemplate {
      * @since 3.5.0
      */
     private boolean baseColumnList;
+
+    /**
+     * 是否开启joinColumnList
+     */
+    private boolean joinColumnList;
+
+    /**
+     * 是否生成 selectByPrimaryKey 等方法
+     */
+    private boolean mybatisGeneratorBase;
 
     /**
      * 转换输出Mapper文件名称
@@ -114,12 +125,14 @@ public class Mapper implements ITemplate {
         data.put("baseResultMap", this.baseResultMap);
         data.put("baseColumnList", this.baseColumnList);
         data.put("superMapperClassPackage", this.superClass);
-        if(enableCache){
+        if (enableCache) {
             Class<? extends Cache> cacheClass = this.getCache();
             data.put("cache", cacheClass);
             data.put("cacheClassName", cacheClass.getName());
         }
         data.put("superMapperClass", ClassUtils.getSimpleName(this.superClass));
+        data.put("mybatisGeneratorBase", this.mybatisGeneratorBase);
+        data.put("joinColumnList", this.joinColumnList);
         return data;
     }
 
@@ -159,7 +172,7 @@ public class Mapper implements ITemplate {
          * @return this
          * @since 3.5.0
          */
-        public Builder enableBaseResultMap(){
+        public Builder enableBaseResultMap() {
             this.mapper.baseResultMap = true;
             return this;
         }
@@ -238,5 +251,16 @@ public class Mapper implements ITemplate {
         public Mapper get() {
             return this.mapper;
         }
+
+        public Builder enableJoinColumnList() {
+            this.mapper.joinColumnList = true;
+            return this;
+        }
+
+        public IConfigBuilder<StrategyConfig> mybatisGeneratorBase() {
+            this.mapper.mybatisGeneratorBase = true;
+            return this;
+        }
+
     }
 }
