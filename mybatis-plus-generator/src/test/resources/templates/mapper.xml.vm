@@ -10,6 +10,7 @@
 #if(${baseResultMap})
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="${package.Entity}.${entity}">
+        <!--@mbg.generated-->
 #foreach($field in ${table.fields})
 #if(${field.keyFlag})##生成主键排在第一位
         <id column="${field.name}" property="${field.propertyName}" />
@@ -29,6 +30,7 @@
 #if(${baseColumnList})
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
+        <!--@mbg.generated-->
 #foreach($field in ${table.commonFields})
         ${field.columnName},
 #end
@@ -39,52 +41,57 @@
 #if(!${mp})
     #if(${mybatisGeneratorBase})
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
         select
         <include refid="Base_Column_List" />
         from ${table.name}
         where ${table.primaryKey.columnName} = #{${table.primaryKey.propertyName}}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        <!--@mbg.generated-->
         delete from ${table.name}
         where ${table.primaryKey.columnName} = #{${table.primaryKey.propertyName}}
     </delete>
     <insert id="insert" parameterType="${package.Entity}.${entity}">
+        <!--@mbg.generated-->
         insert into ${table.name} (
 #foreach($field in ${table.commonFields})${field.columnName}, #end
 #foreach($field in ${table.fields})${field.columnName}#if($foreach.count != ${table.fields.size()}), #end#end
 )
         values (
-#foreach($field in ${table.commonFields})${field.propertyName}, #end
+#foreach($field in ${table.commonFields})#{${field.propertyName}}, #end
 #foreach($field in ${table.fields})#{${field.propertyName}}#if($foreach.count != ${table.fields.size()}), #end#end)
     </insert>
     <insert id="insertSelective" parameterType="${package.Entity}.${entity}">
+        <!--@mbg.generated-->
         insert into ${table.name}
         <trim prefix="(" suffix=")" suffixOverrides=",">
             #foreach($field in ${table.commonFields})
-                <if test="${field.propertyName} != null">
-                    ${field.columnName}
-                </if>
+            <if test="${field.propertyName} != null">
+                ${field.columnName},
+            </if>
             #end
             #foreach($field in ${table.fields})
             <if test="${field.propertyName} != null">
-                ${field.columnName}#if($foreach.count != ${table.fields.size()}),#end
+                ${field.columnName},
             </if>
             #end
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             #foreach($field in ${table.commonFields})
-                <if test="${field.propertyName} != null">
-                    #{${field.propertyName}}
-                </if>
+            <if test="${field.propertyName} != null">
+                #{${field.propertyName}},
+            </if>
             #end
             #foreach($field in ${table.fields})
             <if test="${field.propertyName} != null">
-                #{${field.propertyName}}#if($foreach.count != ${table.fields.size()}),#end
+                #{${field.propertyName}},
             </if>
             #end
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="${package.Entity}.${entity}">
+        <!--@mbg.generated-->
         update ${table.name}
         <set>
         #foreach($field in ${table.commonFields})
@@ -95,7 +102,7 @@
         #foreach($field in ${table.fields})
         #if(!${field.keyIdentityFlag})
             <if test="${field.propertyName} != null">
-                ${field.columnName} = #{${field.propertyName}}#if($foreach.count != ${table.fields.size()}),#end
+                ${field.columnName} = #{${field.propertyName}},
             </if>
         #end
         #end
@@ -103,6 +110,7 @@
         where ${table.primaryKey.columnName} = #{${table.primaryKey.propertyName}}
     </update>
     <update id="updateByPrimaryKey" parameterType="${package.Entity}.${entity}">
+        <!--@mbg.generated-->
         update ${table.name}
         set
         #foreach($field in ${table.commonFields})

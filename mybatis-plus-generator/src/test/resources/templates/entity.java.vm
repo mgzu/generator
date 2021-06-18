@@ -28,6 +28,11 @@ public class ${entity} extends ${superEntityClass} {
 #if("$!field.comment" != "")
     /**
      * ${field.comment}
+     * @mbg.generated
+     */
+#else
+    /**
+     * @mbg.generated
      */
 #end
 #if(${field.keyFlag})
